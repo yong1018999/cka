@@ -1,0 +1,28 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+    name: dds-create
+rules:
+- apiGroups: [""]
+  resources: ["Deployment","Daemonset","Statefulset"]
+  verbs: ["create"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jinyong
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: create
+  namespace: default
+subjects:
+- kind: User
+  name: jinyong
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole 
+  name: dds-create 
+  apiGroup: rbac.authorization.k8s.io
